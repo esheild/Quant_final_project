@@ -1,9 +1,3 @@
-
-
-![](thumbnails/LA.png)
-
-Above photo courtesy of TravLin Potography.
-
 ---
 title: "Bike Lanes & Gentrification in Los Angeles"
 author: "E.Sheild_N.Levine_G.Barrett-Jackson"
@@ -17,6 +11,9 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+![](thumbnails/LA.png)
+
+Courtesy of TravLin Photography.
 
 ![](thumbnails/cyclist.png)
 
@@ -32,15 +29,15 @@ This semester, we set out to test this empirically. With respect to the City of 
 
 # Background
 
-In order to understand the socioeconomic implications of bicycle infrastructure, we first contextualize previous academic research supplemented with current news articles. 
+In order to understand the socioeconomic implications of installing bicycle infrastructure, we first looked to previous academic research and current news articles. 
 
 Exploring the relationship between the installation of bicycle facilities and socioeconomic and demographic changes in 29 US cities, Ferenchak and Wesley researched the distribution of bicycling networks across socioeconomic/demographic spectrums (2021). Their research concluded that while bike lane installation was concentrated in lower-income areas, there was a “weak and largely non-significant” relationship of causality. 
 
-Focusing on Portland, OR and Chicago, IL, Flanagan et al. (2016) “identify a bias towards increased cycling infrastructure investment in areas of existing or increasing privilege.”  Reviewing research methods used in this study was an important roadmap for us as the researchers pulled from census demographic data and ran linear regressions to estimate how changes in demographics associated with gentrification are related to cycling infrastructure investment. 
+Focusing on Portland, OR and Chicago, IL, Flanagan et al. (2016) “identify a bias towards increased cycling infrastructure investment in areas of existing or increasing privilege.”  Reviewing research methods used in this study was an important roadmap for us as the researchers pulled from census data and ran linear regressions to estimate how changes in demographics associated with gentrification are related to cycling infrastructure investment. 
 
 Finally, we relied heavily on the teachings and research of our Professor, Carole Voulgaris. Her publication with other researches "Healthy for whom? Equity in the spatial distribution of cycling risks in Los Angeles, CA” provided good research methodological strategy and structure as well as inspired us to keep equity at the forefront of our research (Braun et. al., 2021).
 
-Ahead of diving into our own data in the context of Los Angeles, these research bodies, and current news articles, helped us to think critically about our research question and hypothesis. We hope our research can supplement and contribute to the broader research body of social determinants of bicycle infrastructure and ridership.
+Engaging with this scholarship helped us to hone our research question and hypothesis. We hope our research can supplement and contribute to the broader research body of social determinants of bicycle infrastructure and ridership.
 
 
 # Data
@@ -218,7 +215,7 @@ kable(cont_summary, digits = 0)
 ```
 
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r, message=FALSE, results='hide', warning=FALSE, echo=FALSE}
 pct_white_maj <- t.test(acs_la_tracts_new$binary_white == "white")
 pct_white_min <- t.test(acs_la_tracts_new$binary_white == "non_white")
 ```
@@ -229,7 +226,7 @@ res_t_test <- t.test(acs_la_tracts_new2$percent_res_new)
 ```
 
 
-```{r, message=FALSE, results=FALSE, warning=FALSE, echo=FALSE}
+```{r, message=FALSE, results=FALSE,  results='hide', warning=FALSE, echo=FALSE}
 la_tract_summary <- tibble(`Race in Census Tracts` = 
                               c("white_maj",
                                 "white_min"),
@@ -242,10 +239,10 @@ la_tract_summary <- tibble(`Race in Census Tracts` =
                             `95-percent confidence - high` = 
                               c(pct_white_maj$conf.int[2] * 100,
                                 pct_white_min$conf.int[2] * 100))
-kable(la_tract_summary, digits = 0)
+
 ```
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r, message=FALSE, results=FALSE, results='hide', warning=FALSE, echo=FALSE}
 la_tract_tenure <- tibble(`Tenure in Census Tracts` = 
                               c("New Residents"),
                             `Sample proportion` = 
@@ -257,23 +254,6 @@ la_tract_tenure <- tibble(`Tenure in Census Tracts` =
 kable(la_tract_tenure)
 ```
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-ggplot(la_tract_summary) +
-  geom_bar(aes(x = `Race in Census Tracts`, 
-               y = `Sample proportion`),
-           stat = "identity") +
-  geom_errorbar(aes(x = `Race in Census Tracts`, 
-               y = `Sample proportion`,
-               ymin = `95-percent confidence - low`,
-               ymax = `95-percent confidence - high`),
-           stat = "identity") +
-  scale_y_continuous(name = "Number of Tracts",
-                     breaks = c(0, 20, 40, 60, 80),
-                     labels = c("0", "20", "40", "60", "80")) +
-  theme_bw()
-```
-
- 
 ```{r, results='hide', echo=FALSE}
 cor.test(~ bikeways2$sum_Length + bikeways2$med_income_E)
 ```
@@ -289,7 +269,7 @@ cor.test(~ sum_Length + pop_E, data = bikeways2)
 t.test(sum_Length ~ binary_white, data = bikeways2)
 ```
 
-```{r, results='hide', echo=FALSE}
+```{r, results='hide', results=FALSE, echo=FALSE}
 bike_race_model <- lm(sum_Length ~ binary_white, data = bikeways2)
 summary(bike_race_model)
 ```
@@ -297,15 +277,16 @@ summary(bike_race_model)
 
 # Methods
 
-After conducting our previous research and collecting our datasets, our research methods consisted of organizing, filtering, and compiling our data set and then ran a series linear regressions to analyze the linear of feet of bike lanes to the gentrification variables. Linear feet of bike lane per census tract was our dependent variable. Although interpreted in greater detail in the previous section, the purpose of this study is to assess whether bike lane length per census tracts is an indicator of areas of greater gentrification. Therefore, if our model has a significant positive coefficient for majority white, that means majority white census tracts have more bicycle lanes. 
+After conducting our previous research and collecting our datasets, our research method consisted of organizing, filtering, and compiling our dataset and then running a series linear regressions on linear feet of bike lane in relation to the gentrification variables. Linear feet of bike lane per census tract was our dependent variable. Again , the purpose of this study is to assess whether bike lane length per census tracts is an indicator of areas of greater gentrification. Therefore, if our model has a significant positive coefficient for majority white, that means majority white census tracts have more bicycle lanes. 
 
-The first linear regression is a bi-variate analysis. A bi-variate relationship is between two variables, race (white) and bikeways (dependent). Put simply, a regression, which is all about prediction on an average, is a method for determining the relationship between quantifiable variables.
+First, we ran a bivariate regression of race (white) and bikeways (dependent). Put simply, a regression, which is all about prediction on an average, is a method for determining the relationship between quantifiable variables.
 
-Secondly, we ran a series of multivariate regressions to control for the other independent variables. This regression model, lm function, predicts the effects of the change in gentrification on the linear feet of bike lanes.
 
-Thirdly, based on our variables, we believe the non-linear transformation is a better fit for our data. We want to analyze if the % change in our variables is a better indicator than the actual value of a fixed increase/decrease. This statistical significance  of pop_density to bike lane length inspired us to run log2, which with a base-two log our interpretation of the coefficient will have the effect of doubling the population density.
+Second, we ran a series of multivariate regressions to control for the other independent variables. This regression model, lm function, predicts the effects of the change in gentrification on the linear feet of bike lanes.
 
-Lastly, based on the results of our log transformation we have decided to interact median income with majority white and majority non-white census tracts. An interaction is like a test to see the relationship between one of your dependent variables, bike lane length, and independent variable, median income. We are curious if the relationship between median income and bike lane length depends on the majority race in a tract. In the below section are the results and interpretations of each.
+Third, based on our variables, we believe the non-linear transformation is a better fit for our data. We want to analyze if the percent change in our variables is a better indicator than the actual value of a fixed increase/decrease. This statistical significance  of pop_density to bike lane length inspired us to run log2, which with a base-two log our interpretation of the coefficient will have the effect of doubling the population density.
+
+Lastly, based on the results of our log transformation we have decided to interact median income with majority white and majority non-white census tracts. An interaction is like a test to see the relationship between one dependent variable, bike lane length, and one independent variable, median income. We are curious if the relationship between median income and bike lane length depends on the majority race in a tract. In the below section are the results and interpretations of each.
 
 ## Bivariate Analysis
 
@@ -418,13 +399,13 @@ For non-white tracts, as median income increases, bike lane length also increase
 
 # Discussion
 
-Defining gentrification proved to be the most challenging aspect of this research project, and we identify as one salient weakness in this analysis. We defined gentrification by changes in neighborhood characteristics, whether that be economic, social, socioeconomic, etc. In order to define gentrification, we turned to various indicators provided in the ACS, tenure, median income, and race. 
+Defining gentrification proved to be the most challenging aspect of this research project, and we identify as one salient weakness in this analysis. We defined gentrification by changes in neighborhood characteristics, whether that be economic, social, etc. In order to define gentrification, we turned to various indicators provided in the ACS, including tenure, median income, and race. 
 
-When conducting our analysis we found that the bivariate analysis demonstrates a weak positive relationship between bike lanes and median income. We found a white majority census have just under 800 more linear feet of bike lanes than non-white majority. For population density we can not say with 95% certainty that bike lane length is associated with population density. The multivariate analysis, when logged, improved our model fit nearly two-fold. Overall it is better to control for those variables, and analysis at the percent changes as opposed to unit increases. Finally, our interaction model highlights the nuances that exist in the increase of median income by racial makeup and bike lane length.
+When conducting our analysis we found that the bivariate analysis demonstrates a weak positive relationship between bike lanes and median income. We found white majority census tracts have roughly 800 more linear feet of bike lanes than non-white majority census tracts. For population density we can not say with 95% certainty that bike lane length is associated with population density. The multivariate analysis, when logged, improved our model fit nearly two-fold. Overall it is better to control for those variables, and to analyze  the percent changes as opposed to unit increases. Finally, our interaction model highlights the nuances that exist in the increase of median income by racial makeup and bike lane length.
 
-Time and the geographic context were limitations in our research project. Although we were able to accomplish a great deal of research throughout the seven week quantitative methodologies course, more time to find precedent studies and possibly run our analysis on multiple cities would have more thoroughly informed our research design and findings. As a group, we had little time for deep reflection of our findings. Some of our initial reflections brought to light questions about our findings. Specifically, does better bicycle infrastructure indicate areas of gentrification, or does gentrification as a phenomena spur better development of bicycle infrastructure? 
+Time and the geographic context were limitations in our research project. Although we were able to accomplish a great deal of research throughout the seven week quantitative methods course, more time to find precedent studies and possibly run our analysis on multiple cities would have more thoroughly informed our research design and findings. Some of our initial reflections brought to light questions about our findings. Specifically, does better bicycle infrastructure indicate areas of gentrification, or does gentrification as a phenomenon spur better development of bicycle infrastructure?
 
-Additional reflection centered around why bike lane length went down in white majority census tracts and income increased. We hypothesized that this dynamic stems from the data identifying that wealthy individuals can afford to have cars in the city and often live further out from the core of the city, meaning they are more inclined to drive. This is cited by Flanagan et. al. 2016. We were also surprised to find that as population density increased, bike lane length decreased. This finding led us to consider the autocentric nature of Los Angeles, even in its densest geographies many residents still own cars. The conflict of land uses (bike infrastructure vs. parking) is amplified in very dense regions, possibly accounting for why there is less bike infrastructure. This specific finding, that bike lane length decreases as population density increases, would be interesting to compare to other cities around the country.
+Additional reflection centered around why bike lane length went down in white majority census tracts and income increased. We hypothesized that this dynamic stems from the data identifying that wealthy individuals can afford to have cars in the city and often live further out from the core of the city, meaning they are more inclined to drive. This is suggested by Flanagan et. al. 2016. We were also surprised to find that as population density increased, bike lane length decreased. This finding led us to consider the autocentric nature of Los Angeles—even in its densest geographies many residents still own cars. The conflict of land uses (bike infrastructure vs. parking) is amplified in very dense regions, possibly accounting for why there is less bike infrastructure. This specific finding, that bike lane length decreases as population density increases, would be interesting to compare to other cities around the country.
 
 # Conclusion
 
@@ -434,7 +415,7 @@ Relating back to the published research by Ferenchak and Marshall (2021). We fee
 
 Previous research referenced in Ferenchak and Marshall’s work suggested that Black and Hispanic populations tend to be at higher risk on the road – particularly as pedestrians and bicyclists – than White populations. We feel an important supplement to where bicycle lanes are would be to assess how pedestrian safety differs between groups of varying privileges. 
 
-If we were to further this research, we would want to supplement our quantitative data with a qualitative method, such as interviews, that highlight the lived-experiences and ridership of individuals in these Census Block groups.
+If we were to further this research, we would want to supplement our quantitative data with a qualitative method, such as interviews, that highlight the lived-experiences and ridership of individuals in these census block groups.
 
  
 # References
